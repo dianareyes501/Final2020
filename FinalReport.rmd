@@ -32,7 +32,13 @@ $A_0$ The Alternative Hypothesis is that among the target population, the vaccin
 Every question is of a Cat~Cat type.
 
 
-# Results
+# Inferential Results
+
+```{r}
+chisq.test(~infected + treatment,data=DataF)
+chisqtestGC(~infected + treatment,data=DataG)
+fisher.test(table1)
+```
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
@@ -59,8 +65,6 @@ barchartGC(~infected + treatment,data=DataG)
 
 
 It appears that the vaccine has a negative effect on the guys since they a higher risk of being infected with COVID-19 if they receive the vaccine.
-
-
 
 # Discussion and Conclusion
 
