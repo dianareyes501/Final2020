@@ -1,0 +1,158 @@
+---
+title: "Covid19 vaccine study Final2020"
+author: "Diana Reyes"
+date: "10/22/2020"
+output: html_document
+---
+
+```{r include=FALSE,echo=FALSE}
+require(tidyverse)
+require(tigerstats)
+require(forcats)
+OldData <-read.csv(file="covid91.csv",header=TRUE)
+#recode aids to say covid and then remove the annoying "X" from the dataframe
+FinalData <- OldData %>% mutate(infected = recode(infected, aids = "covid", none = "OK" )) %>% select(-one_of("X"))
+```
+
+# Introduction
+
+<!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
+
+A new  preventative vaccine (covid91) is under test in clinical trials. Given the nature of this vaccine it is suspected that the drug may exhibit different effectiveness across the variety of subpopulations tracked. Consider population subgroups by gender( guys and gals), drug use, and sexual orientation. Write a complete report that separately considers this drug for each subgroup and your recommendations as to whether people in the subgroup should take the vaccine.
+
+$H_0$ The Null Hypothesis is that among the target population, the vaccine has no effect on whether one contracts the virus or not.
+
+$A_0$ The Alternative Hypothesis is that among the target population, the vaccine has no effect on whether one contracts the virus or not.
+
+# Methods
+
+<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
+
+Every question is of a Cat~Cat type therefore we will use the Cat~Cat method for "Gals", "Guys", "LGBTQ" and "Drug Users".
+
+
+# Inferential Results
+
+<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+
+
+# Descriptive Results
+
+```{r}
+DataF=filter(FinalData,sex== "gal")
+barchartGC(~infected + treatment,data=DataF)
+barchartGC(~infected + treatment,data=DataF, type="percent", main="Gals")
+```
+
+
+
+Among the females who contracted Covid-19, twice as many took the placebo. Therefore it appears that the vaccine does have a positive effect. 
+
+### Numerical Summary for "Gals"
+```{r}
+table1 <- xtabs(~infected + treatment,data=DataF)
+rowPerc(table1)
+colPerc(table1)
+```
+
+### Inferential Results for "Gals"
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+The charts for "Gals" prove that the ones who took the vaccine were less likely to contract the virus as oppose to those who didn't. Double the amount of females who didn't take the vaccine were infected as oppose to only the 36% that took the vaccine. It appears that the vaccine did in fact help prevint the infection for "gals". The numnerical summary shows clearly that only 4.4% of women who took the vaccine were infected and it was nearly double for the ones who took the placebo in the amount of 8.67%. The total amount of feamales tested were 100 and helps prove that the vaccine has a positive effect on females against the virus when the vaccine is taken.
+
+```{r}
+DataM=filter(FinalData,sex=="guy")
+barchartGC(~infected + treatment,data=DataM)
+barchartGC(~infected + treatment,data=DataM, type="percent", main="Guys")
+```
+The barplot graph shows that "guys" whom took the drug and vaccine were affected more than those whom didn't take the vaccine or drug. Also "guys" whom didn't the contract the virus or take the vaccine had the same amount of being effected which was a low percentage. 
+## Numerical Summaries For "Guys"
+
+```{r}
+table1 <- xtabs(~infected + treatment,data=DataM)
+rowPerc(table1)
+colPerc(table1)
+```
+
+The X-Tab results reflect that the "guys" whom took the vaccine and contracted the virus was at a 58%!! There was 3.7% of the "guys" who took the vaccine and contracted the virus compared to the 2.6% who caught the virus without the vaccine.
+
+## Inferential For "Guys"
+
+```{r}
+able1 <- xtabs(~infected + treatment,data=DataM)
+rowPerc(table1)
+colPerc(table1)
+```
+
+
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+The charts reflect that males or "Guys" shows that the odds ration of catching the virus with the vaccine is 1.48%. The 95% confidence interval shows that the percentage is anywhere form 1.2% to 1.8%. 
+```{r}
+DataH=filter(FinalData,LGBTQ=="gay")
+barchartGC(~infected + treatment,data=DataH)
+barchartGC(~infected + treatment,data=DataH, type="percent", main="LGBTQ")
+```
+The barchart reflects that a high percentage of 75% of "LGBTQ" whom took the vaccine also had a higher rate of contracting the virus. In the case of the "LGBTQ", it would be better to not take the vaccine that way the odds of catching the virus would be that of a lesser chance of roughly 30%. The ones whom didn't catch the virus, doesn't have or show a difference whether they took the vaccine or not.
+
+## Numerical Summaries For "LGBTQ"
+
+```{r}
+table1 <- xtabs(~infected + treatment,data=DataH)
+rowPerc(table1)
+colPerc(table1)
+```
+
+## Inferential For "LGBTQ"
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+
+The inferential results show that the vaccine caused double the ability to contract the virus as oppose to the ones whom didn't take the vaccine. The vaccine is not effective amount the LGBTQ and have an odds ration of 2.5% of contracting the virus with the vaccine. The 95% confidence level shows that "LGBTQ" have an odds ratio of catching the virus between 1.6% to 3.9% when the vaccine is taken.
+.0
+
+
+# Plot Barplots For "Drug Users"
+
+```{r}
+DataU=filter(FinalData,DrugUser=="yes")
+barchartGC(~infected + treatment,data=DataU)
+barchartGC(~infected + treatment,data=DataU, type="percent", main="Drug Users")
+```
+The barchart shows that "Drug Users" had a positive outcome on those who took the vaccine as oppose to those whom didn't. 68% of those whom caught the virus didn't take the vaccine as oppose to the the 33% percent who took the vaccine. 
+
+## Numerical Summaries For "Drug Users"
+
+```{r}
+table1 <- xtabs(~infected + treatment,data=DataU)
+rowPerc(table1)
+colPerc(table1)
+```
+
+## Inferential For "Drug Users"
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
+The inferential test show taht the 95% confidence level is in favor of "Drug Users" taking the vaccine in the .4% to .9% that will contract the virus with the odds ration of .5%.
+
+# Discussion and Conclusion
+
+<!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhaps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+In conclusion it is safe to say that we reject the Null Hypothesis since among the target population, the vaccine has no effect on whether one contracts the virus or not when it comes to the "Gals" and "Drug USers". We side with the Alternative Hypothesis is that among the target population, the vaccine has no effect on whether one contracts the virus or not when it comes to the "Gals" and "Drug Users". We also reject the Null Hypothesis when it comes to the "Guys" and "LGBTQ" due to not having sufficient proof. "LGBTQ" were at a higher risk to contract the virus with the vaccine as oppose to the other categories. "Gals" were defintnely less likely of contracting the virus with the vaccine. Also to conclude, "Drug Users" had a better outcome as oppose to not drug users. Ultimately it depends in what category one is in to determine the probability of the vaccine helping you. 
